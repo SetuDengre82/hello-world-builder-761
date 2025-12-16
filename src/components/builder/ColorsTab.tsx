@@ -1,16 +1,9 @@
 import { Check } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { ColorTheme } from '@/types/profile';
 
-interface ColorTheme {
-  id: string;
-  name: string;
-  primary: string;
-  secondary: string;
-  accent: string;
-}
-
-const colorThemes: ColorTheme[] = [
+export const colorThemes: ColorTheme[] = [
   { id: 'gold-maroon', name: 'Gold & Maroon', primary: '#D4AF37', secondary: '#800020', accent: '#FFF8E7' },
   { id: 'rose-gold', name: 'Rose Gold', primary: '#B76E79', secondary: '#F5E6E8', accent: '#FDF5F6' },
   { id: 'royal-blue', name: 'Royal Blue', primary: '#1E3A5F', secondary: '#C9A227', accent: '#F5F7FA' },

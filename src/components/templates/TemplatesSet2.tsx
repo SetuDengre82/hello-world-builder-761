@@ -1,9 +1,11 @@
-import { ProfileData } from '@/types/profile';
+import { ProfileData, ColorTheme } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
 import { TemplateProps } from './TemplatesSet1';
 
+const defaultTheme: ColorTheme = { id: 'gold-maroon', name: 'Gold & Maroon', primary: '#D4AF37', secondary: '#800020', accent: '#FFF8E7' };
+
 // Template 6: Saffron Traditional
-export const SaffronTraditionalTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
+export const SaffronTraditionalTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-gradient-to-b from-[hsl(var(--saffron))]/20 to-white relative`}>
     <div className="absolute top-0 left-0 right-0 h-24 bg-[hsl(var(--saffron))]" />
     <div className="relative z-10 pt-4 px-8 pb-8">
