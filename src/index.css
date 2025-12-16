@@ -2,46 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Great+Vibes&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 96%;
+    --background: 40 30% 96%;
+    --foreground: 25 30% 15%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 96%;
+    --card: 40 40% 98%;
+    --card-foreground: 25 30% 15%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 40 40% 98%;
+    --popover-foreground: 25 30% 15%;
 
-    --primary: 0 0% 96%;
-    --primary-foreground: 0 0% 3%;
+    --primary: 25 70% 45%;
+    --primary-foreground: 40 30% 98%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 35 60% 90%;
+    --secondary-foreground: 25 30% 20%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 35 20% 90%;
+    --muted-foreground: 25 15% 45%;
 
-    --accent: 120 100% 50%;
-    --accent-foreground: 0 0% 3%;
+    --accent: 15 80% 50%;
+    --accent-foreground: 40 30% 98%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 96%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 120 100% 50%;
+    --border: 35 30% 82%;
+    --input: 35 30% 82%;
+    --ring: 25 70% 45%;
 
-    --radius: 0;
+    --radius: 0.5rem;
 
-    --font-mono: 'JetBrains Mono', monospace;
+    /* Template-specific colors */
+    --gold: 43 74% 49%;
+    --gold-light: 43 74% 70%;
+    --maroon: 0 60% 30%;
+    --maroon-light: 0 40% 50%;
+    --saffron: 30 100% 50%;
+    --cream: 40 50% 95%;
+    --royal-blue: 230 70% 40%;
+    --emerald: 145 60% 35%;
+    --burgundy: 345 60% 30%;
+    --rose: 350 60% 70%;
+    --peacock: 175 70% 35%;
+    --purple: 280 60% 45%;
+    --teal: 180 50% 40%;
+    --coral: 16 85% 60%;
+    --olive: 80 40% 35%;
+    --navy: 220 60% 25%;
+    --blush: 350 50% 85%;
+    --champagne: 45 50% 85%;
+    --rust: 20 70% 40%;
+    --sage: 130 25% 60%;
   }
 
   .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 96%;
+    --background: 25 30% 8%;
+    --foreground: 40 30% 96%;
+    
+    --card: 25 25% 12%;
+    --card-foreground: 40 30% 96%;
   }
 }
 
@@ -51,49 +74,69 @@
   }
 
   body {
-    @apply bg-background text-foreground font-mono antialiased;
-    font-family: var(--font-mono);
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
 @layer components {
-  .text-glitch {
-    animation: glitch 2s infinite;
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .font-script {
+    font-family: 'Great Vibes', cursive;
+  }
+  
+  .font-royal {
+    font-family: 'Cinzel', serif;
+  }
+  
+  .font-elegant {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  
+  .font-hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
   }
 
-  .cursor-blink {
-    animation: blink 1s step-end infinite;
+  .pattern-mandala {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
-}
 
-@keyframes glitch {
-  0%, 90%, 100% {
-    transform: translate(0);
-    opacity: 1;
+  .pattern-paisley {
+    background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a959' fill-opacity='0.08'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
-  92% {
-    transform: translate(-2px, 1px);
-    opacity: 0.8;
-  }
-  94% {
-    transform: translate(2px, -1px);
-    opacity: 0.9;
-  }
-  96% {
-    transform: translate(-1px, 2px);
-    opacity: 0.7;
-  }
-  98% {
-    transform: translate(1px, -2px);
-    opacity: 1;
-  }
-}
 
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
+  .pattern-floral {
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e8b4b8' fill-opacity='0.15'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
-  51%, 100% {
-    opacity: 0;
+
+  .gradient-gold {
+    background: linear-gradient(135deg, hsl(43, 74%, 49%) 0%, hsl(35, 80%, 60%) 50%, hsl(43, 74%, 49%) 100%);
+  }
+
+  .gradient-maroon {
+    background: linear-gradient(135deg, hsl(0, 60%, 30%) 0%, hsl(350, 50%, 40%) 100%);
+  }
+
+  .gradient-royal {
+    background: linear-gradient(135deg, hsl(230, 70%, 40%) 0%, hsl(260, 60%, 50%) 100%);
+  }
+
+  .gradient-peacock {
+    background: linear-gradient(135deg, hsl(175, 70%, 35%) 0%, hsl(190, 60%, 45%) 100%);
+  }
+
+  .border-ornate {
+    border-image: linear-gradient(135deg, hsl(43, 74%, 49%), hsl(35, 80%, 60%), hsl(43, 74%, 49%)) 1;
+  }
+
+  .text-shadow-gold {
+    text-shadow: 0 2px 4px hsla(43, 74%, 49%, 0.3);
+  }
+
+  .shadow-elegant {
+    box-shadow: 0 10px 40px -10px hsla(25, 70%, 45%, 0.2), 0 4px 6px -2px hsla(25, 70%, 45%, 0.1);
   }
 }
