@@ -1,4 +1,4 @@
-import { ProfileData, Sibling } from '@/types/profile';
+import { ProfileData, Sibling, CustomFamilyMember, relationshipOptions } from '@/types/profile';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -49,6 +49,28 @@ export const DetailsTab = ({ data, onChange }: DetailsTabProps) => {
 
   const removeSibling = (type: 'brothers' | 'sisters', id: string) => {
     updateField(type, data[type].filter(s => s.id !== id));
+  };
+
+  // Custom family member functions
+  const addCustomFamilyMember = () => {
+    const newMember: CustomFamilyMember = {
+      id: Date.now().toString(),
+      relationship: '',
+      name: '',
+      occupation: '',
+    };
+    updateField('customFamilyMembers', [...(data.customFamilyMembers || []), newMember]);
+  };
+
+  const updateCustomFamilyMember = (id: string, field: keyof CustomFamilyMember, value: string) => {
+    const members = (data.customFamilyMembers || []).map(m => 
+      m.id === id ? { ...m, [field]: value } : m
+    );
+    updateField('customFamilyMembers', members);
+  };
+
+  const removeCustomFamilyMember = (id: string) => {
+    updateField('customFamilyMembers', (data.customFamilyMembers || []).filter(m => m.id !== id));
   };
 
   return (
@@ -409,7 +431,7 @@ export const DetailsTab = ({ data, onChange }: DetailsTabProps) => {
               </div>
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">Maternal Uncle Name</label>
+              <label className="text-xs text-muted-foreground">Maternal Uncle Name (Mama)</label>
               <Input value={data.maternalUncleName} onChange={(e) => updateField('maternalUncleName', e.target.value)} />
             </div>
 
@@ -469,6 +491,38 @@ export const DetailsTab = ({ data, onChange }: DetailsTabProps) => {
                   {sister.married && (
                     <Input placeholder="Spouse Name" value={sister.spouseName || ''} onChange={(e) => updateSibling('sisters', sister.id, 'spouseName', e.target.value)} />
                   )}
+                </div>
+              ))}
+            </div>
+
+            {/* Custom Family Members */}
+            <div className="border-t pt-3">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium">Other Family Members ({(data.customFamilyMembers || []).length})</label>
+                <Button variant="outline" size="sm" onClick={addCustomFamilyMember} className="h-7 text-xs">
+                  <Plus className="w-3 h-3 mr-1" /> Add Relative
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mb-2">Add relatives like Fufa, Mosa, Tau, Chacha, Bua, etc.</p>
+              {(data.customFamilyMembers || []).map((member) => (
+                <div key={member.id} className="p-3 bg-muted/50 rounded-lg mb-2 space-y-2">
+                  <div className="flex gap-2">
+                    <Select value={member.relationship} onValueChange={(v) => updateCustomFamilyMember(member.id, 'relationship', v)}>
+                      <SelectTrigger className="flex-1"><SelectValue placeholder="Select Relationship" /></SelectTrigger>
+                      <SelectContent>
+                        {relationshipOptions.map(rel => (
+                          <SelectItem key={rel} value={rel}>{rel}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button variant="ghost" size="icon" onClick={() => removeCustomFamilyMember(member.id)} className="shrink-0 text-destructive">
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input placeholder="Name" value={member.name} onChange={(e) => updateCustomFamilyMember(member.id, 'name', e.target.value)} />
+                    <Input placeholder="Occupation" value={member.occupation} onChange={(e) => updateCustomFamilyMember(member.id, 'occupation', e.target.value)} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -572,6 +626,23 @@ export const DetailsTab = ({ data, onChange }: DetailsTabProps) => {
               <div>
                 <label className="text-xs text-muted-foreground">Community</label>
                 <Input value={data.partnerCommunity} onChange={(e) => updateField('partnerCommunity', e.target.value)} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-muted-foreground">Location Preference</label>
+                <Input value={data.partnerLocation} onChange={(e) => updateField('partnerLocation', e.target.value)} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground">Manglik Preference</label>
+                <Select value={data.partnerManglik} onValueChange={(v) => updateField('partnerManglik', v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Any">Any</SelectItem>
+                    <SelectItem value="Manglik">Manglik</SelectItem>
+                    <SelectItem value="Non-Manglik">Non-Manglik</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div>
