@@ -1,3 +1,19 @@
+export interface Sibling {
+  id: string;
+  name: string;
+  occupation: string;
+  married: boolean;
+  spouseName?: string;
+}
+
+export interface ColorTheme {
+  id: string;
+  name: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+}
+
 export interface ProfileData {
   // Basic Information
   fullName: string;
@@ -60,11 +76,11 @@ export interface ProfileData {
   motherPrefix: string;
   motherName: string;
   motherOccupation: string;
-  brothersTotal: number;
-  brothersMarried: number;
-  sistersTotal: number;
-  sistersMarried: number;
+  brothers: Sibling[];
+  sisters: Sibling[];
   maternalUncleName: string;
+  familyType: string;
+  familyStatus: string;
 
   // Contact Information
   contactViewMode: string;
@@ -127,7 +143,7 @@ export const sampleProfileData: ProfileData = {
   professionCategory: "IT / Software",
   occupation: "Software Engineer",
   annualIncome: "25+ LPA",
-  workDetail: "Consultant @ Deloitte USI, Bangalore | Previous: Tech Lead @ Nokia, Software Developer @ TEKSystems",
+  workDetail: "Consultant @ Deloitte USI, Bangalore",
 
   presentAddress: "Bangalore, Karnataka",
   permanentAddress: "Katni, Madhya Pradesh",
@@ -140,15 +156,17 @@ export const sampleProfileData: ProfileData = {
 
   fatherPrefix: "Shri",
   fatherName: "Santosh Dengre",
-  fatherOccupation: "Consultant Eng, Katni",
+  fatherOccupation: "Consultant Engineer",
   motherPrefix: "Smt.",
   motherName: "Abhilasha Dengre",
   motherOccupation: "Home Maker",
-  brothersTotal: 0,
-  brothersMarried: 0,
-  sistersTotal: 1,
-  sistersMarried: 1,
+  brothers: [],
+  sisters: [
+    { id: '1', name: 'Priya Sharma', occupation: 'Teacher', married: true, spouseName: 'Rahul Sharma' }
+  ],
   maternalUncleName: "Shri Jitendra Dadarya",
+  familyType: "Nuclear",
+  familyStatus: "Middle Class",
 
   contactViewMode: "Premium Only",
   contactNumber: "9755342599",

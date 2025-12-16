@@ -1,9 +1,11 @@
-import { ProfileData } from '@/types/profile';
+import { ProfileData, ColorTheme } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
 import { TemplateProps } from './TemplatesSet1';
 
+const defaultTheme: ColorTheme = { id: 'gold-maroon', name: 'Gold & Maroon', primary: '#D4AF37', secondary: '#800020', accent: '#FFF8E7' };
+
 // Template 11: Teal Modern
-export const TealModernTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
+export const TealModernTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-white relative`}>
     <div className="absolute top-0 left-0 w-1/3 h-full bg-[hsl(var(--teal))]" />
     <div className="relative z-10 p-8 flex">

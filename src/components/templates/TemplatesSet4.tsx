@@ -1,9 +1,11 @@
-import { ProfileData } from '@/types/profile';
+import { ProfileData, ColorTheme } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
 import { TemplateProps } from './TemplatesSet1';
 
+const defaultTheme: ColorTheme = { id: 'gold-maroon', name: 'Gold & Maroon', primary: '#D4AF37', secondary: '#800020', accent: '#FFF8E7' };
+
 // Template 16: Blush Elegant
-export const BlushElegantTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
+export const BlushElegantTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-[hsl(var(--blush))] relative`}>
     <div className="absolute inset-0 pattern-floral" />
     <div className="relative z-10 p-8">

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { ProfileData, sampleProfileData } from '@/types/profile';
+import { ProfileData, sampleProfileData, ColorTheme } from '@/types/profile';
 import * as Templates from '@/components/templates';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormatTab } from './FormatTab';
-import { ColorsTab } from './ColorsTab';
+import { ColorsTab, colorThemes } from './ColorsTab';
 import { DetailsTab } from './DetailsTab';
 import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download } from 'lucide-react';
 
@@ -37,10 +37,11 @@ export const ProfileBuilder = () => {
   const [selectedColor, setSelectedColor] = useState('gold-maroon');
   const [showGaneshJi, setShowGaneshJi] = useState(true);
   const [profileData, setProfileData] = useState<ProfileData>(sampleProfileData);
-  const [zoom, setZoom] = useState(100);
+  const [zoom, setZoom] = useState(70);
 
   const currentTemplate = templateList.find(t => t.id === selectedTemplate);
   const TemplateComponent = currentTemplate?.component;
+  const currentColorTheme = colorThemes.find(c => c.id === selectedColor) || colorThemes[0];
 
   const handlePrint = () => window.print();
 
@@ -66,7 +67,7 @@ export const ProfileBuilder = () => {
       <main className="container mx-auto py-6 px-4 print:p-0">
         <div className="flex gap-6 print:block">
           {/* Left Panel - Tabs */}
-          <div className="w-[400px] shrink-0 print:hidden">
+          <div className="w-[420px] shrink-0 print:hidden">
             <div className="bg-white rounded-xl shadow-lg border border-[hsl(var(--gold))]/20 p-4">
               <Tabs defaultValue="format" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 mb-4">
@@ -117,12 +118,12 @@ export const ProfileBuilder = () => {
               <div className="flex items-center gap-2">
                 <Eye className="w-5 h-5 text-[hsl(var(--maroon))]" />
                 <span className="font-medium text-[hsl(var(--maroon))]">Live Preview</span>
-                <span className="text-xs px-2 py-1 bg-[hsl(var(--gold))]/20 rounded-full">
-                  {templateList.find(t => t.id === selectedTemplate)?.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: currentColorTheme.primary + '20', color: currentColorTheme.primary }}>
+                  {currentColorTheme.name}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={() => setZoom(Math.max(50, zoom - 10))}>
+                <Button variant="outline" size="icon" onClick={() => setZoom(Math.max(30, zoom - 10))}>
                   <ZoomOut className="w-4 h-4" />
                 </Button>
                 <span className="text-sm w-14 text-center">{zoom}%</span>
@@ -143,6 +144,7 @@ export const ProfileBuilder = () => {
                     data={profileData} 
                     style="" 
                     showGaneshJi={showGaneshJi}
+                    colorTheme={currentColorTheme}
                   />
                 )}
               </div>
