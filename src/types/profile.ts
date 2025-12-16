@@ -6,6 +6,13 @@ export interface Sibling {
   spouseName?: string;
 }
 
+export interface CustomFamilyMember {
+  id: string;
+  relationship: string; // e.g., "Fufa", "Mosa", "Uncle", "Tau", "Chacha", etc.
+  name: string;
+  occupation: string;
+}
+
 export interface ColorTheme {
   id: string;
   name: string;
@@ -78,6 +85,7 @@ export interface ProfileData {
   motherOccupation: string;
   brothers: Sibling[];
   sisters: Sibling[];
+  customFamilyMembers: CustomFamilyMember[];
   maternalUncleName: string;
   familyType: string;
   familyStatus: string;
@@ -104,6 +112,26 @@ export interface ProfileData {
   partnerManglik: string;
   additionalExpectations: string;
 }
+
+// Predefined relationship options for custom family members
+export const relationshipOptions = [
+  'Fufa (फूफा)',
+  'Fufi (फूफी)',
+  'Mosa (मौसा)',
+  'Mosi (मौसी)',
+  'Tau (ताऊ)',
+  'Tai (ताई)',
+  'Chacha (चाचा)',
+  'Chachi (चाची)',
+  'Nana (नाना)',
+  'Nani (नानी)',
+  'Dada (दादा)',
+  'Dadi (दादी)',
+  'Bua (बुआ)',
+  'Other Uncle',
+  'Other Aunt',
+  'Other'
+];
 
 export const sampleProfileData: ProfileData = {
   fullName: "Setu Dengre",
@@ -163,6 +191,9 @@ export const sampleProfileData: ProfileData = {
   brothers: [],
   sisters: [
     { id: '1', name: 'Priya Sharma', occupation: 'Teacher', married: true, spouseName: 'Rahul Sharma' }
+  ],
+  customFamilyMembers: [
+    { id: '1', relationship: 'Mosa (मौसा)', name: 'Shri Jitendra Dadarya', occupation: 'Business' }
   ],
   maternalUncleName: "Shri Jitendra Dadarya",
   familyType: "Nuclear",

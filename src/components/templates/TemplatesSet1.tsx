@@ -1,11 +1,14 @@
 import { ProfileData, ColorTheme } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
+import { FamilyDetailsSection, PartnerPreferencesSection, Watermark, KundliDisplay, ProfilePhoto } from './TemplateHelpers';
 
 export interface TemplateProps {
   data: ProfileData;
   style: string;
   showGaneshJi?: boolean;
   colorTheme?: ColorTheme;
+  isPremium?: boolean;
+  ganeshJiImage?: string;
 }
 
 const defaultTheme: ColorTheme = {
@@ -16,24 +19,48 @@ const defaultTheme: ColorTheme = {
   accent: '#FFF8E7'
 };
 
+// Helper Components
+const Section = ({ title, color, children, className = '' }: { title: string; color: string; children: React.ReactNode; className?: string }) => (
+  <div className={`${className}`}>
+    <h4 className="font-semibold text-xs mb-1 pb-1 border-b" style={{ color, borderColor: color }}>{title}</h4>
+    <div className="text-xs space-y-0.5">{children}</div>
+  </div>
+);
+
+const MinimalSection = ({ title, color, children }: { title: string; color: string; children: React.ReactNode }) => (
+  <div>
+    <h4 className="text-xs font-semibold mb-2" style={{ color }}>{title}</h4>
+    {children}
+  </div>
+);
+
+const MinimalGrid = ({ children }: { children: React.ReactNode }) => (
+  <div className="grid grid-cols-2 gap-1 text-sm">{children}</div>
+);
+
+const InfoCard = ({ title, color, children }: { title: string; color: ColorTheme; children: React.ReactNode }) => (
+  <div className="p-3 rounded-lg" style={{ backgroundColor: color.accent }}>
+    <h4 className="font-semibold text-xs mb-2" style={{ color: color.primary }}>{title}</h4>
+    <div className="space-y-1 text-xs">{children}</div>
+  </div>
+);
+
+const InfoRow = ({ label, value }: { label: string; value: string }) => (
+  <p><span className="text-gray-500">{label}:</span> {value}</p>
+);
+
 // Template 1: Classic Royal
-export const ClassicRoyalTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
+export const ClassicRoyalTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme, isPremium = false, ganeshJiImage }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] p-8 ${style} relative overflow-hidden`} style={{ backgroundColor: colorTheme.accent }}>
     <div className="absolute inset-0 pattern-mandala opacity-20" />
     <div className="relative z-10">
       <div className="text-center mb-4">
-        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-2 object-contain" />}
+        {showGaneshJi && <img src={ganeshJiImage || ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-2 object-contain" />}
         <h1 className="font-script text-3xl" style={{ color: colorTheme.primary }}>Marriage Profile</h1>
       </div>
       <div className="p-5 bg-white/90" style={{ border: `3px solid ${colorTheme.primary}` }}>
         <div className="flex gap-5">
-          <div className="w-36 h-44 flex items-center justify-center overflow-hidden" style={{ border: `2px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}>
-            {data.profilePhoto ? (
-              <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-gray-400 text-sm">Photo</span>
-            )}
-          </div>
+          <ProfilePhoto photo={data.profilePhoto} colorTheme={colorTheme} className="w-36 h-44 rounded" />
           <div className="flex-1">
             <h2 className="font-display text-2xl mb-2" style={{ color: colorTheme.secondary }}>{data.prefix} {data.fullName}</h2>
             <div className="grid grid-cols-2 gap-1 text-xs">
@@ -72,14 +99,7 @@ export const ClassicRoyalTemplate = ({ data, style, showGaneshJi = true, colorTh
         </div>
         
         <Section title="Family Details" color={colorTheme.primary} className="mt-3">
-          <div className="grid grid-cols-2 gap-2">
-            <p>Father: {data.fatherPrefix} {data.fatherName} ({data.fatherOccupation})</p>
-            <p>Mother: {data.motherPrefix} {data.motherName} ({data.motherOccupation})</p>
-            {data.brothers.length > 0 && <p>Brothers: {data.brothers.map(b => `${b.name}${b.married ? ' (M)' : ''}`).join(', ')}</p>}
-            {data.sisters.length > 0 && <p>Sisters: {data.sisters.map(s => `${s.name}${s.married ? ' (M)' : ''}`).join(', ')}</p>}
-            <p>Family: {data.familyType} | {data.familyStatus}</p>
-            <p>Mama: {data.maternalUncleName}</p>
-          </div>
+          <FamilyDetailsSection data={data} colorTheme={colorTheme} showOccupation={true} />
         </Section>
 
         <Section title="Address" color={colorTheme.primary} className="mt-3">
@@ -94,29 +114,25 @@ export const ClassicRoyalTemplate = ({ data, style, showGaneshJi = true, colorTh
             <span className="text-xs">{data.hobbies.join(', ')}</span>
           </div>
         )}
+
+        <PartnerPreferencesSection data={data} colorTheme={colorTheme} />
         
         <div className="mt-3 text-center p-2 rounded text-white text-xs" style={{ backgroundColor: colorTheme.secondary }}>
           📞 {data.contactNumber} | ✉️ {data.email}
         </div>
 
-        {data.kundliImage && (
-          <div className="mt-3 flex justify-center">
-            <div className="text-center">
-              <p className="text-xs font-semibold mb-1" style={{ color: colorTheme.primary }}>Kundli</p>
-              <img src={data.kundliImage} alt="Kundli" className="w-40 h-40 object-contain border rounded" style={{ borderColor: colorTheme.primary }} />
-            </div>
-          </div>
-        )}
+        <KundliDisplay kundliImage={data.kundliImage} colorTheme={colorTheme} />
       </div>
     </div>
+    <Watermark isPremium={isPremium} />
   </div>
 );
 
 // Template 2: Modern Minimal
-export const ModernMinimalTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
-  <div className={`w-[210mm] min-h-[297mm] p-8 ${style} bg-white`}>
+export const ModernMinimalTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme, isPremium = false, ganeshJiImage }: TemplateProps) => (
+  <div className={`w-[210mm] min-h-[297mm] p-8 ${style} bg-white relative`}>
     <div className="text-center mb-6">
-      {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-14 h-14 mx-auto mb-2 object-contain opacity-80" />}
+      {showGaneshJi && <img src={ganeshJiImage || ganeshJi} alt="Ganesh Ji" className="w-14 h-14 mx-auto mb-2 object-contain opacity-80" />}
       <div className="w-16 h-0.5 mx-auto" style={{ backgroundColor: colorTheme.primary }} />
     </div>
     <div className="flex gap-8">
@@ -153,11 +169,10 @@ export const ModernMinimalTemplate = ({ data, style, showGaneshJi = true, colorT
           </MinimalSection>
           
           <MinimalSection title="Family" color={colorTheme.primary}>
-            <p>{data.fatherPrefix} {data.fatherName} - {data.fatherOccupation}</p>
-            <p>{data.motherPrefix} {data.motherName}</p>
-            {data.brothers.length > 0 && <p>Brothers: {data.brothers.length}</p>}
-            {data.sisters.length > 0 && <p>Sisters: {data.sisters.length}</p>}
+            <FamilyDetailsSection data={data} colorTheme={colorTheme} showOccupation={true} />
           </MinimalSection>
+
+          <PartnerPreferencesSection data={data} colorTheme={colorTheme} variant="minimal" />
         </div>
       </div>
       <div className="w-44">
@@ -168,35 +183,29 @@ export const ModernMinimalTemplate = ({ data, style, showGaneshJi = true, colorT
             <span className="text-gray-400">Photo</span>
           )}
         </div>
-        {data.kundliImage && (
-          <div className="mt-3">
-            <p className="text-xs text-gray-500 mb-1">Kundli</p>
-            <img src={data.kundliImage} alt="Kundli" className="w-full h-36 object-contain border rounded" />
-          </div>
-        )}
+        <KundliDisplay kundliImage={data.kundliImage} colorTheme={colorTheme} size="small" />
       </div>
     </div>
     <div className="mt-6 pt-4 border-t text-center text-sm text-gray-500">
       {data.contactNumber} • {data.email} • {data.presentAddress}
     </div>
+    <Watermark isPremium={isPremium} />
   </div>
 );
 
 // Template 3: Traditional Mandala
-export const TraditionalMandalaTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
+export const TraditionalMandalaTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme, isPremium = false, ganeshJiImage }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} relative`} style={{ backgroundColor: colorTheme.accent }}>
     <div className="absolute inset-0 pattern-mandala opacity-30" />
     <div className="relative z-10 p-6">
       <div className="text-center">
-        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto mb-1 object-contain" />}
+        {showGaneshJi && <img src={ganeshJiImage || ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto mb-1 object-contain" />}
         <h1 className="font-hindi text-xl" style={{ color: colorTheme.secondary }}>|| श्री गणेशाय नमः ||</h1>
         <h2 className="font-script text-4xl mt-1" style={{ color: colorTheme.primary }}>वैवाहिक परिचय</h2>
       </div>
       <div className="mt-4 bg-white/90 backdrop-blur rounded-lg p-5" style={{ border: `2px solid ${colorTheme.primary}` }}>
         <div className="flex gap-5">
-          <div className="w-32 h-40 rounded overflow-hidden" style={{ border: `2px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}>
-            {data.profilePhoto && <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" />}
-          </div>
+          <ProfilePhoto photo={data.profilePhoto} colorTheme={colorTheme} className="w-32 h-40 rounded" />
           <div className="flex-1">
             <h2 className="font-display text-xl" style={{ color: colorTheme.secondary }}>{data.prefix} {data.fullName}</h2>
             <table className="w-full mt-2 text-xs">
@@ -222,47 +231,37 @@ export const TraditionalMandalaTemplate = ({ data, style, showGaneshJi = true, c
           </div>
           <div className="p-3 rounded" style={{ backgroundColor: colorTheme.accent }}>
             <h4 className="font-semibold mb-1" style={{ color: colorTheme.secondary }}>पारिवारिक विवरण</h4>
-            <p>पिता: {data.fatherPrefix} {data.fatherName}</p>
-            <p className="text-gray-600">{data.fatherOccupation}</p>
-            <p>माता: {data.motherPrefix} {data.motherName}</p>
-            <p>भाई: {data.brothers.length} | बहन: {data.sisters.length}</p>
-            <p>मामा: {data.maternalUncleName}</p>
+            <FamilyDetailsSection data={data} colorTheme={colorTheme} showOccupation={true} />
           </div>
         </div>
+
+        <PartnerPreferencesSection data={data} colorTheme={colorTheme} />
         
         <div className="mt-3 p-2 rounded text-center text-xs" style={{ backgroundColor: colorTheme.primary + '20' }}>
           <p><strong>संपर्क:</strong> {data.contactNumber} | {data.email}</p>
           <p>{data.presentAddress}, {data.city}, {data.state}</p>
         </div>
 
-        {data.kundliImage && (
-          <div className="mt-3 flex justify-center">
-            <div className="text-center">
-              <p className="text-xs font-semibold mb-1" style={{ color: colorTheme.primary }}>कुंडली</p>
-              <img src={data.kundliImage} alt="Kundli" className="w-36 h-36 object-contain border rounded" style={{ borderColor: colorTheme.primary }} />
-            </div>
-          </div>
-        )}
+        <KundliDisplay kundliImage={data.kundliImage} colorTheme={colorTheme} />
       </div>
     </div>
+    <Watermark isPremium={isPremium} />
   </div>
 );
 
 // Template 4: Elegant Floral
-export const ElegantFloralTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
+export const ElegantFloralTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme, isPremium = false, ganeshJiImage }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} relative bg-white`}>
     <div className="absolute inset-0 pattern-floral opacity-20" />
     <div className="absolute top-0 left-0 right-0 h-24" style={{ background: `linear-gradient(to bottom, ${colorTheme.primary}30, transparent)` }} />
     <div className="relative z-10 p-6">
       <div className="text-center mb-4">
-        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-2 object-contain" />}
+        {showGaneshJi && <img src={ganeshJiImage || ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-2 object-contain" />}
         <h1 className="font-elegant text-3xl italic" style={{ color: colorTheme.secondary }}>Marriage Biodata</h1>
       </div>
       <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg" style={{ border: `1px solid ${colorTheme.primary}` }}>
         <div className="text-center mb-4">
-          <div className="w-28 h-36 rounded-xl mx-auto shadow-lg overflow-hidden" style={{ border: `3px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}>
-            {data.profilePhoto && <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" />}
-          </div>
+          <ProfilePhoto photo={data.profilePhoto} colorTheme={colorTheme} className="w-28 h-36 rounded-xl mx-auto shadow-lg" />
           <h2 className="font-display text-2xl mt-3" style={{ color: colorTheme.secondary }}>{data.fullName}</h2>
           <p style={{ color: colorTheme.primary }}>{data.occupation} | {data.annualIncome}</p>
         </div>
@@ -286,31 +285,29 @@ export const ElegantFloralTemplate = ({ data, style, showGaneshJi = true, colorT
             <p>{data.workDetail}</p>
           </InfoCard>
           <InfoCard title="Family" color={colorTheme}>
-            <InfoRow label="Father" value={`${data.fatherName} (${data.fatherOccupation})`} />
-            <InfoRow label="Mother" value={data.motherName} />
-            <InfoRow label="Siblings" value={`${data.brothers.length} Brother, ${data.sisters.length} Sister`} />
+            <FamilyDetailsSection data={data} colorTheme={colorTheme} showOccupation={false} />
           </InfoCard>
         </div>
+
+        <PartnerPreferencesSection data={data} colorTheme={colorTheme} />
+
         <div className="mt-4 text-center text-xs text-gray-600">
           📞 {data.contactNumber} | ✉️ {data.email} | 📍 {data.city}, {data.state}
         </div>
-        {data.kundliImage && (
-          <div className="mt-4 flex justify-center">
-            <img src={data.kundliImage} alt="Kundli" className="w-32 h-32 object-contain border rounded-lg" style={{ borderColor: colorTheme.primary }} />
-          </div>
-        )}
+        <KundliDisplay kundliImage={data.kundliImage} colorTheme={colorTheme} size="small" />
       </div>
     </div>
+    <Watermark isPremium={isPremium} />
   </div>
 );
 
 // Template 5: Royal Peacock
-export const RoyalPeacockTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme }: TemplateProps) => (
+export const RoyalPeacockTemplate = ({ data, style, showGaneshJi = true, colorTheme = defaultTheme, isPremium = false, ganeshJiImage }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} text-white relative overflow-hidden`} style={{ background: `linear-gradient(135deg, ${colorTheme.secondary}, ${colorTheme.primary})` }}>
     <div className="absolute inset-0 pattern-paisley opacity-15" />
     <div className="relative z-10 p-6">
       <div className="text-center mb-4">
-        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-1 object-contain brightness-150" />}
+        {showGaneshJi && <img src={ganeshJiImage || ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-1 object-contain brightness-150" />}
         <h1 className="font-royal text-2xl tracking-wider" style={{ color: colorTheme.accent }}>MARRIAGE BIODATA</h1>
         <div className="flex justify-center gap-2 mt-1">
           <div className="w-12 h-0.5" style={{ backgroundColor: colorTheme.accent }} />
@@ -325,82 +322,48 @@ export const RoyalPeacockTemplate = ({ data, style, showGaneshJi = true, colorTh
           </div>
           <div className="flex-1">
             <h2 className="font-display text-2xl" style={{ color: colorTheme.accent }}>{data.fullName}</h2>
-            <p className="opacity-80 mb-3">{data.occupation} | {data.annualIncome}</p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <DetailItem label="Birth" value={`${data.dateOfBirth}, ${data.placeOfBirth}`} accent={colorTheme.accent} />
-              <DetailItem label="Height" value={data.height} accent={colorTheme.accent} />
-              <DetailItem label="Religion" value={`${data.religion}, ${data.caste}`} accent={colorTheme.accent} />
-              <DetailItem label="Gotra" value={data.gotra} accent={colorTheme.accent} />
-              <DetailItem label="Manglik" value={data.manglikStatus} accent={colorTheme.accent} />
-              <DetailItem label="Diet" value={data.diet} accent={colorTheme.accent} />
+            <p className="opacity-80">{data.occupation} | {data.annualIncome}</p>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+              <p>Age: {data.age} years</p>
+              <p>Height: {data.height}</p>
+              <p>DOB: {data.dateOfBirth}</p>
+              <p>Birth Place: {data.placeOfBirth}</p>
+              <p>Complexion: {data.complexion}</p>
+              <p>Diet: {data.diet}</p>
             </div>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        
+        <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
           <div className="bg-white/5 rounded-lg p-3">
-            <h4 className="font-semibold mb-2 text-sm" style={{ color: colorTheme.accent }}>Education & Career</h4>
-            <p className="text-xs opacity-90">{data.highestEducation}</p>
-            <p className="text-xs opacity-90">{data.workDetail}</p>
+            <h4 className="font-semibold mb-2" style={{ color: colorTheme.accent }}>Religion & Gotra</h4>
+            <p>{data.religion} - {data.caste}</p>
+            <p>Gotra: {data.gotra} | Aakna: {data.aakna}</p>
+            <p>Manglik: {data.manglikStatus}</p>
+            <p>Rashi: {data.zodiac}</p>
           </div>
           <div className="bg-white/5 rounded-lg p-3">
-            <h4 className="font-semibold mb-2 text-sm" style={{ color: colorTheme.accent }}>Family</h4>
-            <p className="text-xs opacity-90">Father: {data.fatherName}</p>
-            <p className="text-xs opacity-70">{data.fatherOccupation}</p>
-            <p className="text-xs opacity-90">Mother: {data.motherName}</p>
-            <p className="text-xs opacity-70">Siblings: {data.brothers.length}B, {data.sisters.length}S</p>
+            <h4 className="font-semibold mb-2" style={{ color: colorTheme.accent }}>Education</h4>
+            <p>{data.highestEducation}</p>
+            <p className="text-sm opacity-80">{data.workDetail}</p>
           </div>
         </div>
-        <div className="mt-3 text-center py-2 rounded-lg text-sm" style={{ backgroundColor: colorTheme.accent + '30', color: colorTheme.accent }}>
-          📞 {data.contactNumber} | 📍 {data.presentAddress}
+        
+        <div className="mt-4 bg-white/5 rounded-lg p-3">
+          <h4 className="font-semibold mb-2" style={{ color: colorTheme.accent }}>Family Details</h4>
+          <FamilyDetailsSection data={data} colorTheme={colorTheme} showOccupation={true} variant="dark" />
         </div>
-        {data.kundliImage && (
-          <div className="mt-3 flex justify-center">
-            <img src={data.kundliImage} alt="Kundli" className="w-32 h-32 object-contain border rounded" style={{ borderColor: colorTheme.accent }} />
-          </div>
-        )}
+
+        <PartnerPreferencesSection data={data} colorTheme={colorTheme} variant="dark" />
+        
+        <div className="mt-4 text-center py-3 rounded-lg" style={{ backgroundColor: `${colorTheme.accent}30` }}>
+          <p style={{ color: colorTheme.accent }}>📞 {data.contactNumber} | ✉️ {data.email}</p>
+          <p className="text-sm opacity-80">{data.presentAddress}</p>
+        </div>
+
+        <KundliDisplay kundliImage={data.kundliImage} colorTheme={colorTheme} />
       </div>
     </div>
-  </div>
-);
-
-// Helper components
-const Section = ({ title, children, color, className = '' }: { title: string; children: React.ReactNode; color: string; className?: string }) => (
-  <div className={className}>
-    <h3 className="font-semibold text-xs pb-1 mb-1 border-b" style={{ color, borderColor: color }}>
-      {title}
-    </h3>
-    <div className="text-xs space-y-0.5">{children}</div>
-  </div>
-);
-
-const MinimalSection = ({ title, children, color }: { title: string; children: React.ReactNode; color: string }) => (
-  <div>
-    <h3 className="text-xs uppercase tracking-widest mb-1" style={{ color }}>{title}</h3>
-    <div>{children}</div>
-  </div>
-);
-
-const MinimalGrid = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-2 gap-y-0.5 text-gray-600">{children}</div>
-);
-
-const InfoCard = ({ title, children, color }: { title: string; children: React.ReactNode; color: ColorTheme }) => (
-  <div className="rounded-lg p-3" style={{ backgroundColor: color.accent }}>
-    <h4 className="font-semibold mb-2" style={{ color: color.secondary }}>{title}</h4>
-    <div className="space-y-1">{children}</div>
-  </div>
-);
-
-const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between">
-    <span className="text-gray-500">{label}</span>
-    <span className="font-medium text-right">{value}</span>
-  </div>
-);
-
-const DetailItem = ({ label, value, accent }: { label: string; value: string; accent: string }) => (
-  <div>
-    <span className="text-xs opacity-70">{label}</span>
-    <p className="text-xs">{value}</p>
+    <Watermark isPremium={isPremium} />
   </div>
 );
