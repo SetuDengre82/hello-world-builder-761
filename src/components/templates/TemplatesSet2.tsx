@@ -1,24 +1,22 @@
 import { ProfileData } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
-
-interface TemplateProps {
-  data: ProfileData;
-  style: string;
-}
+import { TemplateProps } from './TemplatesSet1';
 
 // Template 6: Saffron Traditional
-export const SaffronTraditionalTemplate = ({ data, style }: TemplateProps) => (
+export const SaffronTraditionalTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-gradient-to-b from-[hsl(var(--saffron))]/20 to-white relative`}>
     <div className="absolute top-0 left-0 right-0 h-24 bg-[hsl(var(--saffron))]" />
     <div className="relative z-10 pt-4 px-8 pb-8">
       <div className="text-center text-white mb-4">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-1 object-contain brightness-200" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto mb-1 object-contain brightness-200" />}
         <h1 className="font-hindi text-xl">॥ श्री गणेशाय नमः ॥</h1>
       </div>
       <div className="bg-white rounded-xl shadow-2xl p-6 -mt-2">
         <h2 className="text-center font-script text-4xl text-[hsl(var(--saffron))] mb-4">Marriage Biodata</h2>
         <div className="flex gap-6">
-          <div className="w-36 h-44 bg-orange-50 rounded-lg border-2 border-[hsl(var(--saffron))]" />
+          <div className="w-36 h-44 bg-orange-50 rounded-lg border-2 border-[hsl(var(--saffron))] overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
           <div className="flex-1">
             <h3 className="font-display text-2xl text-gray-800">{data.fullName}</h3>
             <div className="mt-3 text-sm space-y-1">
@@ -55,13 +53,13 @@ export const SaffronTraditionalTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 7: Maroon Classic
-export const MaroonClassicTemplate = ({ data, style }: TemplateProps) => (
+export const MaroonClassicTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-white relative`}>
     <div className="absolute inset-0 border-[12px] border-[hsl(var(--maroon))]" />
     <div className="absolute inset-3 border-2 border-[hsl(var(--gold))]" />
     <div className="relative z-10 p-10">
       <div className="text-center mb-6">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain" />}
         <h1 className="font-display text-4xl text-[hsl(var(--maroon))] mt-2">Marriage Profile</h1>
         <div className="w-32 h-1 bg-[hsl(var(--gold))] mx-auto mt-2" />
       </div>
@@ -89,7 +87,9 @@ export const MaroonClassicTemplate = ({ data, style }: TemplateProps) => (
           </MaroonBox>
         </div>
         <div className="w-40">
-          <div className="w-full h-52 bg-gray-100 border-4 border-[hsl(var(--maroon))]" />
+          <div className="w-full h-52 bg-gray-100 border-4 border-[hsl(var(--maroon))] overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
         </div>
       </div>
       <MaroonBox title="Education & Career" className="mt-4">
@@ -114,18 +114,20 @@ export const MaroonClassicTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 8: Golden Gradient
-export const GoldenGradientTemplate = ({ data, style }: TemplateProps) => (
+export const GoldenGradientTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} relative overflow-hidden`}>
     <div className="absolute inset-0 bg-gradient-to-br from-[hsl(43,74%,20%)] via-[hsl(43,74%,30%)] to-[hsl(43,74%,20%)]" />
     <div className="absolute inset-0 pattern-paisley opacity-10" />
     <div className="relative z-10 p-8">
       <div className="text-center mb-6">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain brightness-150" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain brightness-150" />}
         <h1 className="font-script text-5xl text-[hsl(var(--gold-light))] mt-2">Biodata</h1>
       </div>
       <div className="bg-gradient-to-br from-[hsl(var(--gold))]/20 to-transparent backdrop-blur rounded-2xl border border-[hsl(var(--gold))]/50 p-6">
         <div className="flex items-start gap-6 mb-6">
-          <div className="w-36 h-44 rounded-xl bg-[hsl(var(--gold))]/20 border-2 border-[hsl(var(--gold))]" />
+          <div className="w-36 h-44 rounded-xl bg-[hsl(var(--gold))]/20 border-2 border-[hsl(var(--gold))] overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
           <div className="text-white">
             <h2 className="font-display text-3xl text-[hsl(var(--gold-light))]">{data.fullName}</h2>
             <p className="text-[hsl(var(--gold))] mt-1">{data.occupation}</p>
@@ -162,19 +164,21 @@ export const GoldenGradientTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 9: Emerald Green
-export const EmeraldGreenTemplate = ({ data, style }: TemplateProps) => (
+export const EmeraldGreenTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-gradient-to-br from-[hsl(var(--emerald))] to-[hsl(145,50%,25%)] text-white relative`}>
     <div className="absolute inset-0 pattern-mandala opacity-10" />
     <div className="relative z-10 p-8">
       <div className="flex items-center justify-center gap-4 mb-6">
         <div className="w-12 h-0.5 bg-[hsl(var(--gold))]" />
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 object-contain brightness-150" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 object-contain brightness-150" />}
         <div className="w-12 h-0.5 bg-[hsl(var(--gold))]" />
       </div>
       <h1 className="text-center font-royal text-3xl text-[hsl(var(--gold))] tracking-wider mb-6">VIVAH BIODATA</h1>
       <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
         <div className="text-center mb-6">
-          <div className="w-32 h-40 bg-white/20 rounded-xl mx-auto border-2 border-[hsl(var(--gold))]" />
+          <div className="w-32 h-40 bg-white/20 rounded-xl mx-auto border-2 border-[hsl(var(--gold))] overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
           <h2 className="font-display text-2xl text-[hsl(var(--gold))] mt-4">{data.fullName}</h2>
         </div>
         <div className="grid grid-cols-3 gap-4 text-sm">
@@ -212,16 +216,18 @@ export const EmeraldGreenTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 10: Purple Royal
-export const PurpleRoyalTemplate = ({ data, style }: TemplateProps) => (
+export const PurpleRoyalTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-gradient-to-br from-[hsl(var(--purple))] via-[hsl(280,50%,35%)] to-[hsl(var(--purple))] text-white relative`}>
     <div className="absolute inset-4 border-2 border-[hsl(var(--gold))]/40 rounded-xl" />
     <div className="relative z-10 p-10">
       <div className="text-center mb-6">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain brightness-150" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain brightness-150" />}
         <h1 className="font-elegant text-4xl text-[hsl(var(--gold))] italic mt-2">Marriage Profile</h1>
       </div>
       <div className="flex gap-6">
-        <div className="w-40 h-52 bg-white/20 rounded-2xl border-2 border-[hsl(var(--gold))]" />
+        <div className="w-40 h-52 bg-white/20 rounded-2xl border-2 border-[hsl(var(--gold))] overflow-hidden">
+          {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+        </div>
         <div className="flex-1">
           <h2 className="font-display text-3xl text-[hsl(var(--gold))]">{data.fullName}</h2>
           <p className="text-purple-200 mb-4">{data.occupation} | {data.annualIncome}</p>

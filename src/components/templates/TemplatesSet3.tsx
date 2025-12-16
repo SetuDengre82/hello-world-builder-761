@@ -1,19 +1,17 @@
 import { ProfileData } from '@/types/profile';
 import ganeshJi from '@/assets/ganesh-ji.png';
-
-interface TemplateProps {
-  data: ProfileData;
-  style: string;
-}
+import { TemplateProps } from './TemplatesSet1';
 
 // Template 11: Teal Modern
-export const TealModernTemplate = ({ data, style }: TemplateProps) => (
+export const TealModernTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-white relative`}>
     <div className="absolute top-0 left-0 w-1/3 h-full bg-[hsl(var(--teal))]" />
     <div className="relative z-10 p-8 flex">
       <div className="w-1/3 pr-6 text-white">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mb-4 object-contain brightness-150" />
-        <div className="w-32 h-40 bg-white/20 rounded-lg mb-4" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mb-4 object-contain brightness-150" />}
+        <div className="w-32 h-40 bg-white/20 rounded-lg mb-4 overflow-hidden">
+          {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+        </div>
         <h2 className="font-display text-xl">{data.fullName}</h2>
         <p className="text-teal-100 text-sm mt-1">{data.occupation}</p>
         <div className="mt-4 space-y-2 text-sm">
@@ -55,17 +53,19 @@ export const TealModernTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 12: Coral Warm
-export const CoralWarmTemplate = ({ data, style }: TemplateProps) => (
+export const CoralWarmTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-gradient-to-br from-[hsl(var(--coral))]/10 to-[hsl(var(--coral))]/20 relative`}>
     <div className="absolute top-0 left-0 right-0 h-48 bg-[hsl(var(--coral))] rounded-b-[50%]" />
     <div className="relative z-10 pt-6 px-8 pb-8">
       <div className="text-center text-white">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto object-contain brightness-200" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 mx-auto object-contain brightness-200" />}
         <h1 className="font-elegant text-3xl mt-2 italic">Marriage Biodata</h1>
       </div>
       <div className="mt-8 bg-white rounded-2xl shadow-xl p-6 -mt-4">
         <div className="flex items-center gap-6 -mt-16">
-          <div className="w-32 h-40 bg-gray-100 rounded-xl border-4 border-white shadow-lg mx-auto" />
+          <div className="w-32 h-40 bg-gray-100 rounded-xl border-4 border-white shadow-lg mx-auto overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
         </div>
         <div className="text-center mt-4">
           <h2 className="font-display text-2xl text-gray-800">{data.fullName}</h2>
@@ -100,18 +100,20 @@ export const CoralWarmTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 13: Navy Formal
-export const NavyFormalTemplate = ({ data, style }: TemplateProps) => (
+export const NavyFormalTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-[hsl(var(--navy))] text-white relative`}>
     <div className="absolute inset-6 border border-[hsl(var(--gold))]/30" />
     <div className="relative z-10 p-10">
       <div className="flex items-center justify-between mb-6">
         <div className="w-12 h-12" />
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 object-contain brightness-150" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-16 h-16 object-contain brightness-150" />}
         <div className="w-12 h-12" />
       </div>
       <h1 className="text-center font-royal text-2xl text-[hsl(var(--gold))] tracking-[0.3em] mb-8">MARRIAGE BIODATA</h1>
       <div className="flex gap-8">
-        <div className="w-44 h-56 bg-white/10 rounded border border-[hsl(var(--gold))]/50" />
+        <div className="w-44 h-56 bg-white/10 rounded border border-[hsl(var(--gold))]/50 overflow-hidden">
+          {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+        </div>
         <div className="flex-1">
           <h2 className="font-display text-3xl text-[hsl(var(--gold))]">{data.fullName}</h2>
           <p className="text-blue-200 mt-1">{data.occupation} | {data.annualIncome}</p>
@@ -145,13 +147,13 @@ export const NavyFormalTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 14: Rust Vintage
-export const RustVintageTemplate = ({ data, style }: TemplateProps) => (
+export const RustVintageTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-[hsl(40,30%,92%)] relative`}>
     <div className="absolute inset-0 pattern-paisley opacity-30" />
     <div className="absolute inset-4 border-4 border-double border-[hsl(var(--rust))]" />
     <div className="relative z-10 p-10">
       <div className="text-center mb-6">
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-20 h-20 mx-auto object-contain" />}
         <h1 className="font-display text-4xl text-[hsl(var(--rust))] mt-2">Biodata</h1>
         <div className="flex items-center justify-center gap-4 mt-2">
           <div className="w-20 h-px bg-[hsl(var(--rust))]" />
@@ -160,7 +162,9 @@ export const RustVintageTemplate = ({ data, style }: TemplateProps) => (
         </div>
       </div>
       <div className="flex gap-6">
-        <div className="w-36 h-44 bg-white border-2 border-[hsl(var(--rust))]" />
+        <div className="w-36 h-44 bg-white border-2 border-[hsl(var(--rust))] overflow-hidden">
+          {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+        </div>
         <div className="flex-1">
           <h2 className="font-display text-2xl text-[hsl(var(--rust))]">{data.fullName}</h2>
           <table className="w-full mt-4 text-sm">
@@ -194,7 +198,7 @@ export const RustVintageTemplate = ({ data, style }: TemplateProps) => (
 );
 
 // Template 15: Sage Minimalist
-export const SageMinimalistTemplate = ({ data, style }: TemplateProps) => (
+export const SageMinimalistTemplate = ({ data, style, showGaneshJi = true }: TemplateProps) => (
   <div className={`w-[210mm] min-h-[297mm] ${style} bg-white relative`}>
     <div className="absolute top-0 right-0 w-1/2 h-full bg-[hsl(var(--sage))]/10" />
     <div className="relative z-10 p-10">
@@ -203,7 +207,7 @@ export const SageMinimalistTemplate = ({ data, style }: TemplateProps) => (
           <h1 className="text-5xl font-light text-gray-800 tracking-tight">{data.fullName}</h1>
           <p className="text-[hsl(var(--sage))] mt-2">{data.occupation}</p>
         </div>
-        <img src={ganeshJi} alt="Ganesh Ji" className="w-14 h-14 object-contain opacity-60" />
+        {showGaneshJi && <img src={ganeshJi} alt="Ganesh Ji" className="w-14 h-14 object-contain opacity-60" />}
       </div>
       <div className="flex gap-10">
         <div className="flex-1 space-y-6">
@@ -230,7 +234,9 @@ export const SageMinimalistTemplate = ({ data, style }: TemplateProps) => (
           </SageSection>
         </div>
         <div className="w-40">
-          <div className="w-full h-52 bg-[hsl(var(--sage))]/20 rounded-lg" />
+          <div className="w-full h-52 bg-[hsl(var(--sage))]/20 rounded-lg overflow-hidden">
+            {data.profilePhoto ? <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" /> : null}
+          </div>
         </div>
       </div>
       <div className="mt-8 pt-6 border-t border-[hsl(var(--sage))]/30">
