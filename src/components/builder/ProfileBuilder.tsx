@@ -6,7 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormatTab } from './FormatTab';
 import { ColorsTab, colorThemes } from './ColorsTab';
 import { DetailsTab } from './DetailsTab';
-import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download } from 'lucide-react';
+import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download, Image, Crown } from 'lucide-react';
+import { exportToPDF, exportAsImage } from '@/lib/pdfExport';
+import { ganeshJiOptions, getGaneshJiImage } from '@/lib/ganeshJiOptions';
+import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const templateList = [
   { id: 'classic-royal', component: Templates.ClassicRoyalTemplate },
@@ -36,14 +47,48 @@ export const ProfileBuilder = () => {
   const [selectedTemplate, setSelectedTemplate] = useState('classic-royal');
   const [selectedColor, setSelectedColor] = useState('gold-maroon');
   const [showGaneshJi, setShowGaneshJi] = useState(true);
+  const [selectedGaneshJi, setSelectedGaneshJi] = useState('classic');
   const [profileData, setProfileData] = useState<ProfileData>(sampleProfileData);
   const [zoom, setZoom] = useState(70);
+  const [isPremium, setIsPremium] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const currentTemplate = templateList.find(t => t.id === selectedTemplate);
   const TemplateComponent = currentTemplate?.component;
   const currentColorTheme = colorThemes.find(c => c.id === selectedColor) || colorThemes[0];
+  const ganeshJiImage = getGaneshJiImage(selectedGaneshJi);
 
-  const handlePrint = () => window.print();
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    try {
+      await exportToPDF('biodata-preview', {
+        fileName: `${profileData.fullName.replace(/\s+/g, '-')}-biodata`,
+        isPremium
+      });
+      toast.success('PDF downloaded successfully!');
+    } catch (error) {
+      toast.error('Failed to export PDF. Please try again.');
+      console.error(error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportImage = async () => {
+    setIsExporting(true);
+    try {
+      await exportAsImage('biodata-preview', {
+        fileName: `${profileData.fullName.replace(/\s+/g, '-')}-biodata`,
+        isPremium
+      });
+      toast.success('Image downloaded successfully!');
+    } catch (error) {
+      toast.error('Failed to export image. Please try again.');
+      console.error(error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--cream))] to-[hsl(var(--champagne))]">
@@ -55,10 +100,41 @@ export const ProfileBuilder = () => {
               <h1 className="font-display text-2xl text-[hsl(var(--maroon))]">Create Your Perfect Biodata</h1>
               <p className="text-sm text-muted-foreground">Choose from 21 unique formats and 20 color themes</p>
             </div>
-            <Button onClick={handlePrint} className="bg-[hsl(var(--maroon))] hover:bg-[hsl(var(--maroon))]/90 gap-2">
-              <Download className="w-4 h-4" />
-              Download PDF
-            </Button>
+            <div className="flex items-center gap-3">
+              {/* Premium Toggle */}
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-100 to-yellow-50 rounded-lg border border-amber-200">
+                <Crown className="w-4 h-4 text-amber-600" />
+                <span className="text-sm text-amber-800 font-medium">Premium</span>
+                <Switch 
+                  checked={isPremium} 
+                  onCheckedChange={setIsPremium}
+                  className="data-[state=checked]:bg-amber-500"
+                />
+              </div>
+              
+              {/* Export Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    className="bg-[hsl(var(--maroon))] hover:bg-[hsl(var(--maroon))]/90 gap-2"
+                    disabled={isExporting}
+                  >
+                    <Download className="w-4 h-4" />
+                    {isExporting ? 'Exporting...' : 'Download'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleExportPDF} className="gap-2">
+                    <FileText className="w-4 h-4" />
+                    Download as PDF
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleExportImage} className="gap-2">
+                    <Image className="w-4 h-4" />
+                    Download as Image
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
       </header>
@@ -93,12 +169,38 @@ export const ProfileBuilder = () => {
                 </TabsContent>
                 
                 <TabsContent value="colors" className="mt-0">
-                  <ColorsTab 
-                    selectedColor={selectedColor}
-                    onSelectColor={setSelectedColor}
-                    showGaneshJi={showGaneshJi}
-                    onToggleGaneshJi={setShowGaneshJi}
-                  />
+                  <div className="space-y-4">
+                    <ColorsTab 
+                      selectedColor={selectedColor}
+                      onSelectColor={setSelectedColor}
+                      showGaneshJi={showGaneshJi}
+                      onToggleGaneshJi={setShowGaneshJi}
+                    />
+                    
+                    {/* Ganesh Ji Selection */}
+                    {showGaneshJi && (
+                      <div className="pt-3 border-t">
+                        <label className="text-sm font-medium text-[hsl(var(--maroon))] mb-2 block">
+                          Select Ganesh Ji Style
+                        </label>
+                        <Select value={selectedGaneshJi} onValueChange={setSelectedGaneshJi}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ganeshJiOptions.map(option => (
+                              <SelectItem key={option.id} value={option.id}>
+                                <div className="flex items-center gap-2">
+                                  <span>{option.name}</span>
+                                  <span className="text-xs text-muted-foreground">- {option.description}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
                 </TabsContent>
                 
                 <TabsContent value="details" className="mt-0">
@@ -121,6 +223,11 @@ export const ProfileBuilder = () => {
                 <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: currentColorTheme.primary + '20', color: currentColorTheme.primary }}>
                   {currentColorTheme.name}
                 </span>
+                {!isPremium && (
+                  <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-700">
+                    Free (with watermark)
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="icon" onClick={() => setZoom(Math.max(30, zoom - 10))}>
@@ -139,14 +246,18 @@ export const ProfileBuilder = () => {
                 style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top center' }}
                 className="shadow-2xl print:shadow-none print:transform-none"
               >
-                {TemplateComponent && (
-                  <TemplateComponent 
-                    data={profileData} 
-                    style="" 
-                    showGaneshJi={showGaneshJi}
-                    colorTheme={currentColorTheme}
-                  />
-                )}
+                <div id="biodata-preview">
+                  {TemplateComponent && (
+                    <TemplateComponent 
+                      data={profileData} 
+                      style="" 
+                      showGaneshJi={showGaneshJi}
+                      colorTheme={currentColorTheme}
+                      isPremium={isPremium}
+                      ganeshJiImage={ganeshJiImage}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
