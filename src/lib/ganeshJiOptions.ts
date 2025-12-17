@@ -1,7 +1,14 @@
 // Ganesh Ji image options for biodata
 // Using different artistic representations
 
-import ganeshJi1 from '@/assets/ganesh-ji.png';
+import ganeshJiClassic from '@/assets/ganesh-ji-classic.png';
+import ganeshJiModern from '@/assets/ganesh-ji-modern.png';
+import ganeshJiLineart from '@/assets/ganesh-ji-lineart.png';
+import ganeshJiGolden from '@/assets/ganesh-ji-golden.png';
+import ganeshJiColorful from '@/assets/ganesh-ji-colorful.png';
+import ganeshJiMandala from '@/assets/ganesh-ji-mandala.png';
+import ganeshJiSimple from '@/assets/ganesh-ji-simple.png';
+import ganeshJiTraditional from '@/assets/ganesh-ji-traditional.png';
 
 // Default Ganesh Ji images with different styles
 export interface GaneshJiOption {
@@ -11,60 +18,58 @@ export interface GaneshJiOption {
   description: string;
 }
 
-// We'll use the existing image as default and create variations
-// In production, these would be actual different images
 export const ganeshJiOptions: GaneshJiOption[] = [
   {
     id: 'classic',
     name: 'Classic',
-    image: ganeshJi1,
-    description: 'Traditional Ganesh Ji'
+    image: ganeshJiClassic,
+    description: 'Traditional red & gold style'
   },
   {
     id: 'modern',
     name: 'Modern',
-    image: ganeshJi1, // Will be replaced with generated images
-    description: 'Contemporary style'
+    image: ganeshJiModern,
+    description: 'Contemporary minimalist'
   },
   {
     id: 'line-art',
     name: 'Line Art',
-    image: ganeshJi1,
-    description: 'Minimalist line drawing'
+    image: ganeshJiLineart,
+    description: 'Elegant line drawing'
   },
   {
     id: 'golden',
     name: 'Golden',
-    image: ganeshJi1,
-    description: 'Golden ornate style'
+    image: ganeshJiGolden,
+    description: 'Luxurious golden finish'
   },
   {
     id: 'colorful',
     name: 'Colorful',
-    image: ganeshJi1,
-    description: 'Vibrant colored version'
+    image: ganeshJiColorful,
+    description: 'Vibrant festive colors'
   },
   {
     id: 'mandala',
     name: 'Mandala',
-    image: ganeshJi1,
+    image: ganeshJiMandala,
     description: 'With mandala pattern'
   },
   {
     id: 'simple',
     name: 'Simple',
-    image: ganeshJi1,
-    description: 'Simple silhouette'
+    image: ganeshJiSimple,
+    description: 'Clean silhouette'
   },
   {
     id: 'traditional',
     name: 'Traditional',
-    image: ganeshJi1,
-    description: 'Traditional Indian art'
+    image: ganeshJiTraditional,
+    description: 'Rajasthani art style'
   }
 ];
 
 export const getGaneshJiImage = (id: string): string => {
   const option = ganeshJiOptions.find(opt => opt.id === id);
-  return option?.image || ganeshJi1;
+  return option?.image || ganeshJiClassic;
 };

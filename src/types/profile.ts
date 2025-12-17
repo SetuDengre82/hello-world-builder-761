@@ -21,6 +21,8 @@ export interface ColorTheme {
   accent: string;
 }
 
+export type ImageSize = 'small' | 'medium' | 'large';
+
 export interface ProfileData {
   // Basic Information
   fullName: string;
@@ -37,6 +39,8 @@ export interface ProfileData {
   profileManagedBy: string;
   aboutMe: string;
   profilePhoto?: string;
+  photoSize?: ImageSize;
+  kundliSize?: ImageSize;
 
   // Lifestyle & Interests
   diet: string;
@@ -148,6 +152,8 @@ export const sampleProfileData: ProfileData = {
   profileManagedBy: "Self",
   aboutMe: "I am a dedicated software engineer with a passion for technology and innovation. I believe in maintaining a balance between professional growth and personal happiness.",
   profilePhoto: "",
+  photoSize: 'medium',
+  kundliSize: 'medium',
 
   diet: "Vegetarian",
   smoking: "No",

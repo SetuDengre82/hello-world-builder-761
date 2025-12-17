@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { ProfileData, sampleProfileData, ColorTheme } from '@/types/profile';
+import { ProfileData, sampleProfileData, ColorTheme, ImageSize } from '@/types/profile';
 import * as Templates from '@/components/templates';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormatTab } from './FormatTab';
 import { ColorsTab, colorThemes } from './ColorsTab';
 import { DetailsTab } from './DetailsTab';
-import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download, Image, Crown } from 'lucide-react';
+import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download, Image, Crown, User, Grid3X3 } from 'lucide-react';
 import { exportToPDF, exportAsImage } from '@/lib/pdfExport';
 import { ganeshJiOptions, getGaneshJiImage } from '@/lib/ganeshJiOptions';
 import { toast } from 'sonner';
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 const templateList = [
   { id: 'classic-royal', component: Templates.ClassicRoyalTemplate },
@@ -200,6 +201,55 @@ export const ProfileBuilder = () => {
                         </Select>
                       </div>
                     )}
+
+                    {/* Image Size Controls */}
+                    <div className="pt-3 border-t space-y-3">
+                      <Label className="text-sm font-medium text-[hsl(var(--maroon))]">
+                        Image Sizes
+                      </Label>
+                      
+                      {/* Profile Photo Size */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm">Profile Photo</span>
+                        </div>
+                        <Select 
+                          value={profileData.photoSize || 'medium'} 
+                          onValueChange={(value: ImageSize) => setProfileData({...profileData, photoSize: value})}
+                        >
+                          <SelectTrigger className="w-24">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="small">Small</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="large">Large</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Kundli Size */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Grid3X3 className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm">Kundli</span>
+                        </div>
+                        <Select 
+                          value={profileData.kundliSize || 'medium'} 
+                          onValueChange={(value: ImageSize) => setProfileData({...profileData, kundliSize: value})}
+                        >
+                          <SelectTrigger className="w-24">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="small">Small</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="large">Large</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                   </div>
                 </TabsContent>
                 
