@@ -6,9 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormatTab } from './FormatTab';
 import { ColorsTab, colorThemes } from './ColorsTab';
 import { DetailsTab } from './DetailsTab';
-import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download, Image, Crown, User, Grid3X3 } from 'lucide-react';
+import { ImagesTab } from './ImagesTab';
+import { LayoutGrid, Palette, FileText, Eye, ZoomIn, ZoomOut, Download, Image, Crown, ImageIcon } from 'lucide-react';
 import { exportToPDF, exportAsImage } from '@/lib/pdfExport';
-import { ganeshJiOptions, getGaneshJiImage } from '@/lib/ganeshJiOptions';
+import { getGaneshJiImage } from '@/lib/ganeshJiOptions';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -17,8 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 
 const templateList = [
   { id: 'classic-royal', component: Templates.ClassicRoyalTemplate },
@@ -144,19 +143,23 @@ export const ProfileBuilder = () => {
       <main className="container mx-auto py-6 px-4 print:p-0">
         <div className="flex gap-6 print:block">
           {/* Left Panel - Tabs */}
-          <div className="w-[420px] shrink-0 print:hidden">
+          <div className="w-[480px] shrink-0 print:hidden">
             <div className="bg-white rounded-xl shadow-lg border border-[hsl(var(--gold))]/20 p-4">
               <Tabs defaultValue="format" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-4">
-                  <TabsTrigger value="format" className="gap-2 text-xs">
+                <TabsList className="grid w-full grid-cols-4 mb-4">
+                  <TabsTrigger value="format" className="gap-1 text-xs">
                     <LayoutGrid className="w-4 h-4" />
                     Format
                   </TabsTrigger>
-                  <TabsTrigger value="colors" className="gap-2 text-xs">
+                  <TabsTrigger value="colors" className="gap-1 text-xs">
                     <Palette className="w-4 h-4" />
                     Colors
                   </TabsTrigger>
-                  <TabsTrigger value="details" className="gap-2 text-xs">
+                  <TabsTrigger value="images" className="gap-1 text-xs">
+                    <ImageIcon className="w-4 h-4" />
+                    Images
+                  </TabsTrigger>
+                  <TabsTrigger value="details" className="gap-1 text-xs">
                     <FileText className="w-4 h-4" />
                     Details
                   </TabsTrigger>
@@ -170,87 +173,23 @@ export const ProfileBuilder = () => {
                 </TabsContent>
                 
                 <TabsContent value="colors" className="mt-0">
-                  <div className="space-y-4">
-                    <ColorsTab 
-                      selectedColor={selectedColor}
-                      onSelectColor={setSelectedColor}
-                      showGaneshJi={showGaneshJi}
-                      onToggleGaneshJi={setShowGaneshJi}
-                    />
-                    
-                    {/* Ganesh Ji Selection */}
-                    {showGaneshJi && (
-                      <div className="pt-3 border-t">
-                        <label className="text-sm font-medium text-[hsl(var(--maroon))] mb-2 block">
-                          Select Ganesh Ji Style
-                        </label>
-                        <Select value={selectedGaneshJi} onValueChange={setSelectedGaneshJi}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {ganeshJiOptions.map(option => (
-                              <SelectItem key={option.id} value={option.id}>
-                                <div className="flex items-center gap-2">
-                                  <span>{option.name}</span>
-                                  <span className="text-xs text-muted-foreground">- {option.description}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
+                  <ColorsTab 
+                    selectedColor={selectedColor}
+                    onSelectColor={setSelectedColor}
+                  />
+                </TabsContent>
 
-                    {/* Image Size Controls */}
-                    <div className="pt-3 border-t space-y-3">
-                      <Label className="text-sm font-medium text-[hsl(var(--maroon))]">
-                        Image Sizes
-                      </Label>
-                      
-                      {/* Profile Photo Size */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">Profile Photo</span>
-                        </div>
-                        <Select 
-                          value={profileData.photoSize || 'medium'} 
-                          onValueChange={(value: ImageSize) => setProfileData({...profileData, photoSize: value})}
-                        >
-                          <SelectTrigger className="w-24">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="small">Small</SelectItem>
-                            <SelectItem value="medium">Medium</SelectItem>
-                            <SelectItem value="large">Large</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      {/* Kundli Size */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Grid3X3 className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">Kundli</span>
-                        </div>
-                        <Select 
-                          value={profileData.kundliSize || 'medium'} 
-                          onValueChange={(value: ImageSize) => setProfileData({...profileData, kundliSize: value})}
-                        >
-                          <SelectTrigger className="w-24">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="small">Small</SelectItem>
-                            <SelectItem value="medium">Medium</SelectItem>
-                            <SelectItem value="large">Large</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
+                <TabsContent value="images" className="mt-0">
+                  <ImagesTab 
+                    showGaneshJi={showGaneshJi}
+                    onToggleGaneshJi={setShowGaneshJi}
+                    selectedGaneshJi={selectedGaneshJi}
+                    onSelectGaneshJi={setSelectedGaneshJi}
+                    photoSize={profileData.photoSize || 'medium'}
+                    onPhotoSizeChange={(size) => setProfileData({...profileData, photoSize: size})}
+                    kundliSize={profileData.kundliSize || 'medium'}
+                    onKundliSizeChange={(size) => setProfileData({...profileData, kundliSize: size})}
+                  />
                 </TabsContent>
                 
                 <TabsContent value="details" className="mt-0">

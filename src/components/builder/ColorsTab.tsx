@@ -1,6 +1,4 @@
 import { Check } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { ColorTheme } from '@/types/profile';
 
 export const colorThemes: ColorTheme[] = [
@@ -29,11 +27,9 @@ export const colorThemes: ColorTheme[] = [
 interface ColorsTabProps {
   selectedColor: string;
   onSelectColor: (id: string) => void;
-  showGaneshJi: boolean;
-  onToggleGaneshJi: (show: boolean) => void;
 }
 
-export const ColorsTab = ({ selectedColor, onSelectColor, showGaneshJi, onToggleGaneshJi }: ColorsTabProps) => {
+export const ColorsTab = ({ selectedColor, onSelectColor }: ColorsTabProps) => {
   return (
     <div className="space-y-6">
       <div>
@@ -41,7 +37,7 @@ export const ColorsTab = ({ selectedColor, onSelectColor, showGaneshJi, onToggle
         <p className="text-sm text-muted-foreground">Select from {colorThemes.length} beautiful themes</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 max-h-[calc(100vh-400px)] overflow-y-auto pr-2">
+      <div className="grid grid-cols-4 gap-3 max-h-[calc(100vh-350px)] overflow-y-auto pr-2">
         {colorThemes.map((theme) => (
           <button
             key={theme.id}
@@ -65,25 +61,6 @@ export const ColorsTab = ({ selectedColor, onSelectColor, showGaneshJi, onToggle
             )}
           </button>
         ))}
-      </div>
-
-      <div className="pt-4 border-t space-y-4">
-        <h3 className="text-lg font-semibold text-[hsl(var(--maroon))]">Additional Options</h3>
-        
-        <div className="flex items-center justify-between p-4 bg-card rounded-lg border">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🙏</span>
-            <div>
-              <Label htmlFor="ganesh-toggle" className="font-medium">Show Ganesh Ji</Label>
-              <p className="text-xs text-muted-foreground">Display at top of profile</p>
-            </div>
-          </div>
-          <Switch
-            id="ganesh-toggle"
-            checked={showGaneshJi}
-            onCheckedChange={onToggleGaneshJi}
-          />
-        </div>
       </div>
     </div>
   );
