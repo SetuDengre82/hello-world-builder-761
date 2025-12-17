@@ -1,4 +1,4 @@
-import { ProfileData, ColorTheme, Sibling, CustomFamilyMember } from '@/types/profile';
+import { ProfileData, ColorTheme, Sibling, CustomFamilyMember, ImageSize } from '@/types/profile';
 import React from 'react';
 
 // Shared utility functions for template rendering
@@ -19,6 +19,23 @@ export const formatSiblingSimple = (sibling: Sibling): string => {
 export const formatCustomFamilyMember = (member: CustomFamilyMember): string => {
   const rel = member.relationship.split(' ')[0]; // Get just the English part
   return `${rel}: ${member.name}${member.occupation ? ` (${member.occupation})` : ''}`;
+};
+
+// Size mapping for images
+export const getImageSizeClass = (size: ImageSize = 'medium', type: 'photo' | 'kundli'): string => {
+  const sizes = {
+    photo: {
+      small: 'w-20 h-24',
+      medium: 'w-28 h-32',
+      large: 'w-36 h-44'
+    },
+    kundli: {
+      small: 'w-24 h-24',
+      medium: 'w-32 h-32',
+      large: 'w-44 h-44'
+    }
+  };
+  return sizes[type][size];
 };
 
 // Shared section components
@@ -127,15 +144,36 @@ export const FamilyDetailsSection = ({
   );
 };
 
-// Watermark Component
+// Diagonal Watermark Component
 export const Watermark = ({ isPremium = false }: { isPremium?: boolean }) => {
   if (isPremium) return null;
   
   return (
-    <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none print:block">
-      <p className="text-xs opacity-50 font-medium tracking-wider">
-        Created with GahoiShaadi.com
-      </p>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none print:block z-10">
+      <div 
+        className="absolute"
+        style={{
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%) rotate(-45deg)',
+          width: '150%',
+        }}
+      >
+        <div className="flex flex-col items-center gap-16">
+          {[...Array(5)].map((_, i) => (
+            <p 
+              key={i}
+              className="text-2xl font-bold tracking-widest whitespace-nowrap"
+              style={{ 
+                color: 'rgba(128, 0, 0, 0.08)',
+                textShadow: '0 0 1px rgba(128, 0, 0, 0.05)'
+              }}
+            >
+              GahoiShaadi.com
+            </p>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -148,15 +186,11 @@ export const KundliDisplay = ({
 }: {
   kundliImage?: string;
   colorTheme: ColorTheme;
-  size?: 'small' | 'medium' | 'large';
+  size?: ImageSize;
 }) => {
   if (!kundliImage) return null;
 
-  const sizeClasses = {
-    small: 'w-28 h-28',
-    medium: 'w-36 h-36',
-    large: 'w-44 h-44'
-  };
+  const sizeClass = getImageSizeClass(size, 'kundli');
 
   return (
     <div className="flex justify-center mt-3">
@@ -165,7 +199,7 @@ export const KundliDisplay = ({
         <img 
           src={kundliImage} 
           alt="Kundli" 
-          className={`${sizeClasses[size]} object-contain border rounded`}
+          className={`${sizeClass} object-contain border rounded`}
           style={{ borderColor: colorTheme.primary }} 
         />
       </div>
@@ -177,20 +211,26 @@ export const KundliDisplay = ({
 export const ProfilePhoto = ({
   photo,
   colorTheme,
-  className = ''
+  className = '',
+  size = 'medium'
 }: {
   photo?: string;
   colorTheme: ColorTheme;
   className?: string;
-}) => (
-  <div 
-    className={`flex items-center justify-center overflow-hidden ${className}`}
-    style={{ border: `2px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}
-  >
-    {photo ? (
-      <img src={photo} alt="Profile" className="w-full h-full object-cover" />
-    ) : (
-      <span className="text-gray-400 text-sm">Photo</span>
-    )}
-  </div>
-);
+  size?: ImageSize;
+}) => {
+  const sizeClass = getImageSizeClass(size, 'photo');
+  
+  return (
+    <div 
+      className={`flex items-center justify-center overflow-hidden rounded ${sizeClass} ${className}`}
+      style={{ border: `2px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}
+    >
+      {photo ? (
+        <img src={photo} alt="Profile" className="w-full h-full object-cover" />
+      ) : (
+        <span className="text-gray-400 text-sm">Photo</span>
+      )}
+    </div>
+  );
+};
