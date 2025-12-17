@@ -21,18 +21,18 @@ export const formatCustomFamilyMember = (member: CustomFamilyMember): string => 
   return `${rel}: ${member.name}${member.occupation ? ` (${member.occupation})` : ''}`;
 };
 
-// Size mapping for images
-export const getImageSizeClass = (size: ImageSize = 'medium', type: 'photo' | 'kundli'): string => {
+// Size mapping for images - returns inline styles for reliable sizing
+export const getImageSize = (size: ImageSize = 'medium', type: 'photo' | 'kundli'): { width: string; height: string } => {
   const sizes = {
     photo: {
-      small: 'w-20 h-24',
-      medium: 'w-28 h-32',
-      large: 'w-36 h-44'
+      small: { width: '80px', height: '96px' },
+      medium: { width: '120px', height: '144px' },
+      large: { width: '160px', height: '192px' }
     },
     kundli: {
-      small: 'w-24 h-24',
-      medium: 'w-32 h-32',
-      large: 'w-44 h-44'
+      small: { width: '80px', height: '80px' },
+      medium: { width: '120px', height: '120px' },
+      large: { width: '160px', height: '160px' }
     }
   };
   return sizes[type][size];
@@ -144,7 +144,7 @@ export const FamilyDetailsSection = ({
   );
 };
 
-// Diagonal Watermark Component
+// Diagonal Watermark Component - Bigger and more visible
 export const Watermark = ({ isPremium = false }: { isPremium?: boolean }) => {
   if (isPremium) return null;
   
@@ -156,17 +156,18 @@ export const Watermark = ({ isPremium = false }: { isPremium?: boolean }) => {
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%) rotate(-45deg)',
-          width: '150%',
+          width: '200%',
         }}
       >
-        <div className="flex flex-col items-center gap-16">
-          {[...Array(5)].map((_, i) => (
+        <div className="flex flex-col items-center gap-24">
+          {[...Array(6)].map((_, i) => (
             <p 
               key={i}
-              className="text-2xl font-bold tracking-widest whitespace-nowrap"
+              className="font-bold tracking-widest whitespace-nowrap"
               style={{ 
-                color: 'rgba(128, 0, 0, 0.08)',
-                textShadow: '0 0 1px rgba(128, 0, 0, 0.05)'
+                fontSize: '42px',
+                color: 'rgba(128, 0, 0, 0.12)',
+                textShadow: '0 0 2px rgba(128, 0, 0, 0.08)'
               }}
             >
               GahoiShaadi.com
@@ -190,7 +191,7 @@ export const KundliDisplay = ({
 }) => {
   if (!kundliImage) return null;
 
-  const sizeClass = getImageSizeClass(size, 'kundli');
+  const sizeStyle = getImageSize(size, 'kundli');
 
   return (
     <div className="flex justify-center mt-3">
@@ -199,8 +200,12 @@ export const KundliDisplay = ({
         <img 
           src={kundliImage} 
           alt="Kundli" 
-          className={`${sizeClass} object-contain border rounded`}
-          style={{ borderColor: colorTheme.primary }} 
+          className="object-contain border rounded"
+          style={{ 
+            borderColor: colorTheme.primary,
+            width: sizeStyle.width,
+            height: sizeStyle.height
+          }} 
         />
       </div>
     </div>
@@ -219,12 +224,19 @@ export const ProfilePhoto = ({
   className?: string;
   size?: ImageSize;
 }) => {
-  const sizeClass = getImageSizeClass(size, 'photo');
+  const sizeStyle = getImageSize(size, 'photo');
   
   return (
     <div 
-      className={`flex items-center justify-center overflow-hidden rounded ${sizeClass} ${className}`}
-      style={{ border: `2px solid ${colorTheme.primary}`, backgroundColor: colorTheme.accent }}
+      className={`flex items-center justify-center overflow-hidden rounded ${className}`}
+      style={{ 
+        border: `2px solid ${colorTheme.primary}`, 
+        backgroundColor: colorTheme.accent,
+        width: sizeStyle.width,
+        height: sizeStyle.height,
+        minWidth: sizeStyle.width,
+        minHeight: sizeStyle.height
+      }}
     >
       {photo ? (
         <img src={photo} alt="Profile" className="w-full h-full object-cover" />
