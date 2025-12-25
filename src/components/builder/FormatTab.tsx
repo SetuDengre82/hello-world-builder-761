@@ -29,6 +29,15 @@ const templates: Template[] = [
   { id: 'diamond-premium', name: 'Diamond Premium', description: 'Premium diamond sparkle', icon: '💎' },
   { id: 'rainbow-festive', name: 'Rainbow Festive', description: 'Colorful festive celebration', icon: '🌈' },
   { id: 'classic-white', name: 'Classic White', description: 'Clean white elegance', icon: '🤍' },
+  { id: 'velvet-luxe', name: 'Velvet Luxe', description: 'Luxurious velvet finish', icon: '🎀' },
+  { id: 'jewel-classic', name: 'Jewel Classic', description: 'Classic jewel tones', icon: '💍' },
+  { id: 'sapphire-night', name: 'Sapphire Night', description: 'Deep blue night sky', icon: '🌙' },
+  { id: 'emerald-garden', name: 'Emerald Garden', description: 'Fresh garden greens', icon: '🌳' },
+  { id: 'pearl-white', name: 'Pearl White', description: 'Elegant pearl finish', icon: '🦪' },
+  { id: 'ruby-romance', name: 'Ruby Romance', description: 'Romantic ruby reds', icon: '💖' },
+  { id: 'topaz-sunshine', name: 'Topaz Sunshine', description: 'Warm sunshine glow', icon: '☀️' },
+  { id: 'onyx-midnight', name: 'Onyx Midnight', description: 'Dark sophisticated style', icon: '🖤' },
+  { id: 'amethyst-dreams', name: 'Amethyst Dreams', description: 'Dreamy purple hues', icon: '🔮' },
 ];
 
 interface FormatTabProps {
