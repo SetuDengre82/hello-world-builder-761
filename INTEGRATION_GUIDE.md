@@ -1,7 +1,7 @@
-# Marriage Profile Generator - Integration Guide
+# Marriage Profile Generator - Integration Guide (30 Templates)
 
 ## Overview
-This is a complete biodata/marriage profile generator with 21 templates, 20 color themes, 8 Ganesh Ji styles, and PDF/Image export functionality.
+This is a complete biodata/marriage profile generator with 30 templates, 20 color themes, 8 Ganesh Ji styles, and PDF/Image export functionality.
 
 ## Files to Copy
 
@@ -21,7 +21,8 @@ src/components/templates/
 ├── TemplatesSet1.tsx      # Templates 1-5
 ├── TemplatesSet2.tsx      # Templates 6-10
 ├── TemplatesSet3.tsx      # Templates 11-15
-└── TemplatesSet4.tsx      # Templates 16-21
+├── TemplatesSet4.tsx      # Templates 16-21
+└── TemplatesSet5.tsx      # Templates 22-30 (NEW)
 ```
 
 ### Types & Utilities (Required)
@@ -154,14 +155,12 @@ Add these to your `index.css`:
 
 ## Features
 
-### 21 Template Designs
-- Classic Royal, Modern Minimal, Traditional Mandala
-- Elegant Floral, Royal Peacock, Saffron Traditional
-- Maroon Classic, Golden Gradient, Emerald Green
-- Purple Royal, Teal Modern, Coral Warm
-- Navy Formal, Rust Vintage, Sage Minimalist
-- Blush Elegant, Champagne Luxury, Olive Traditional
-- Diamond Premium, Rainbow Festive, Classic White
+### 30 Template Designs
+- Set 1: Classic Royal, Modern Minimal, Traditional Mandala, Elegant Floral, Royal Peacock
+- Set 2: Saffron Traditional, Maroon Classic, Golden Gradient, Emerald Green, Purple Royal
+- Set 3: Teal Modern, Coral Warm, Navy Formal, Rust Vintage, Sage Minimalist
+- Set 4: Blush Elegant, Champagne Luxury, Olive Traditional, Diamond Premium, Rainbow Festive, Classic White
+- Set 5 (NEW): Velvet Luxe, Jewel Classic, Sapphire Night, Emerald Garden, Pearl White, Ruby Romance, Topaz Sunshine, Onyx Midnight, Amethyst Dreams
 
 ### 20 Color Themes
 - Gold & Maroon, Rose Gold, Royal Blue, Emerald
