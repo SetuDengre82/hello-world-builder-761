@@ -41,6 +41,15 @@ const templateList = [
   { id: 'diamond-premium', component: Templates.DiamondPremiumTemplate },
   { id: 'rainbow-festive', component: Templates.RainbowFestiveTemplate },
   { id: 'classic-white', component: Templates.ClassicWhiteTemplate },
+  { id: 'velvet-luxe', component: Templates.VelvetLuxeTemplate },
+  { id: 'jewel-classic', component: Templates.JewelClassicTemplate },
+  { id: 'sapphire-night', component: Templates.SapphireNightTemplate },
+  { id: 'emerald-garden', component: Templates.EmeraldGardenTemplate },
+  { id: 'pearl-white', component: Templates.PearlWhiteTemplate },
+  { id: 'ruby-romance', component: Templates.RubyRomanceTemplate },
+  { id: 'topaz-sunshine', component: Templates.TopazSunshineTemplate },
+  { id: 'onyx-midnight', component: Templates.OnyxMidnightTemplate },
+  { id: 'amethyst-dreams', component: Templates.AmethystDreamsTemplate },
 ];
 
 export const ProfileBuilder = () => {
